@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from 'hooks'
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
-import FILLogo from '../../assets/images/filecoin-fil-logo.webp'
+import BITLogo from '../../assets/images/bit-logo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
@@ -53,7 +53,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === ETHER && chainId === 5001) {
-    return <StyledEthereumLogo src={FILLogo} size={size} style={style} />
+    return <StyledEthereumLogo src={BITLogo} size={size} style={style} />
   }
 
   if (currency === ETHER && chainId === 1) {

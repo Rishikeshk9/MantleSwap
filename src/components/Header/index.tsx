@@ -14,8 +14,8 @@ import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/logos/logo_light.png'
-import LogoDark from '../../assets/logos/logo_dark.png'
+import Logo from '../../assets/logos/mantle.png'
+import LogoDark from '../../assets/logos/mantle.png'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
@@ -548,7 +548,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img width={'56px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+            <img style={{ borderRadius: '50px' }} width={'56px'} src={darkMode ? LogoDark : Logo} alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -575,7 +575,7 @@ export default function Header() {
             Vote
           </StyledNavLink> */}
           <StyledNavLink id={`loan-nav-link`} to={'/loan'}>
-            Loans
+            Stake
           </StyledNavLink>
           {/* <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>

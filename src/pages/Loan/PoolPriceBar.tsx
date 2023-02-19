@@ -69,7 +69,7 @@ export function PoolPriceBar({
             {/* <TYPE.black>{price?.toSignificant(6) ?? '-'}</TYPE.black> */}
             <CountUp separator="  " decimals={3} decimal="." prefix="BIT " end={myLent} />
             <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-              Your Lent
+              Your Stake
             </Text>
           </AutoColumn>
           <AutoColumn justify="center">
@@ -78,7 +78,7 @@ export function PoolPriceBar({
             <CountUp separator="  " decimals={3} decimal="." prefix="BIT " end={poolSize} />
 
             <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-              Loan Pool Size
+              Staked Pool Size
               {/* {currencies[Field.CURRENCY_A]?.symbol} per {currencies[Field.CURRENCY_B]?.symbol} */}
             </Text>
           </AutoColumn>

@@ -29,7 +29,7 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
 export function getEtherscanLink(
   chainId: ChainId,
   data: string,
-  type: 'transaction' | 'token' | 'address' | 'block' | 'tipset'
+  type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
   let prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
   if (chainId === ChainId.MANTLE_TESTNET) prefix = `https://explorer.testnet.mantle.xyz`
@@ -42,7 +42,7 @@ export function getEtherscanLink(
       return `${prefix}/token/${data}`
     }
     case 'block': {
-      const blockVar = chainId === 5001 ? `${prefix}/tipset/${data}` : `${prefix}/block/${data}`
+      const blockVar = chainId === 5001 ? `${prefix}/block/${data}` : `${prefix}/block/${data}`
       return blockVar
     }
     case 'address':

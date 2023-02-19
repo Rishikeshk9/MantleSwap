@@ -302,8 +302,8 @@ export default function Swap() {
         onConfirm={handleConfirmTokenWarning}
       />
       <SwapPoolTabs active={'swap'} />
-      <img src={rubyLogo} height="96" width={96} className="ruby" />
-      <img src={fileCoinLogo} height="96" width={96} className="fileCoin" />
+      {/* <img src={rubyLogo} height="96" width={96} className="ruby" />
+      <img src={fileCoinLogo} height="96" width={96} className="fileCoin" /> */}
 
       <AppBody>
         <SwapHeader />

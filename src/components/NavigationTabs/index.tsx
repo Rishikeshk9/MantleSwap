@@ -115,7 +115,7 @@ export function AddRemoveTabs({
         </HistoryLink>
         <ActiveText>
           {loan
-            ? 'Loan'
+            ? 'Stake'
             : borrow
             ? 'Borrow'
             : creating
