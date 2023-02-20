@@ -59,17 +59,17 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: !darkMode ? '#FFB438' : '#adff01',
-    primary2: !darkMode ? '#cc902d' : '#8acc01',
-    primary3: !darkMode ? '#b37e27' : '#689901',
-    primary4: !darkMode ? '#805a1c' : '#456600',
-    primary5: !darkMode ? '#4c3611' : '#233300',
+    primary1: !darkMode ? '#CCE9E7' : '#008f6a',
+    primary2: !darkMode ? '#d6edec' : '#007255',
+    primary3: !darkMode ? '#dbf0ee' : '#005640',
+    primary4: !darkMode ? '#e6f4f3' : '#00392a',
+    primary5: !darkMode ? '#f0f8f8' : '#001d15',
 
     // color text
-    primaryText1: !darkMode ? '#FFB438' : '#adff01',
+    primaryText1: !darkMode ? '#000' : '#008f6a',
 
     // secondary colors
-    secondary1: darkMode ? '#2172E5' : '#ff007a',
+    secondary1: darkMode ? '#2172E5' : '#CCE9E7',
     secondary2: darkMode ? '#17000b26' : '#F6DDE8',
     secondary3: darkMode ? '#17000b26' : '#FDEAF1',
 
@@ -181,9 +181,10 @@ html, input, textarea, button {
   font-family: 'Inter', sans-serif;
   font-display: fallback;
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 }
 

@@ -1,9 +1,7 @@
 {
   "name": "kicktolist",
   "logoURI": "https://swap.kickto.app/images/tokens/icons/small.png",
-  "keywords": [
-    "defi"
-  ],
+  "keywords": ["defi"],
   "timestamp": "2023-01-28T10:05:50.263+00:00",
   "tokens": [
     {
@@ -3834,7 +3832,7 @@
       "chainId": 137,
       "address": "0xb33eaad8d922b1083446dc23f610c2567fb5180f",
       "name": "Uniswap",
-      "symbol": "UNI",
+      "symbol": "MTL",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/12504/thumb/uniswap-uni.png?1600306604"
     },
