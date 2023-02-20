@@ -11,6 +11,7 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 export * from './components'
+export * from './components/text'
 
 const MEDIA_WIDTHS = {
   upToExtraSmall: 500,

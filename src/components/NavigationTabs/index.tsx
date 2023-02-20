@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink, Link as HistoryLink } from 'react-router-dom'
 
 import { ArrowLeft } from 'react-feather'
-import { RowBetween } from '../Row'
+import Row, { RowBetween } from '../Row'
 // import QuestionHelper from '../QuestionHelper'
 import Settings from '../Settings'
 import { useDispatch } from 'react-redux'
@@ -127,6 +127,19 @@ export function AddRemoveTabs({
         </ActiveText>
         <Settings />
       </RowBetween>
+    </Tabs>
+  )
+}
+
+export function CreateProposalTabs() {
+  return (
+    <Tabs>
+      <Row style={{ padding: '1rem 1rem 0 1rem' }}>
+        <HistoryLink to="/vote">
+          <StyledArrowLeft />
+        </HistoryLink>
+        <ActiveText style={{ marginLeft: 'auto', marginRight: 'auto' }}>Create Proposal</ActiveText>
+      </Row>
     </Tabs>
   )
 }

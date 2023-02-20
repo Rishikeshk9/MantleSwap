@@ -185,6 +185,18 @@ export default function Vote() {
           ) : (
             ''
           )}
+          {availableVotes ? (
+            <ButtonPrimary
+              as={Link}
+              to="/create-proposal"
+              style={{ width: 'fit-content', borderRadius: '8px' }}
+              padding="6px 8px"
+            >
+              Create Proposal
+            </ButtonPrimary>
+          ) : (
+            ''
+          )}
         </WrapSmall>
         {!showUnlockVoting && (
           <RowBetween>
