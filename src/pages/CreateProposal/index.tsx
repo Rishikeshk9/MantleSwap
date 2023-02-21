@@ -25,7 +25,7 @@ import styled from 'styled-components/macro'
 import { ExternalLink, ThemedText } from '../../theme'
 
 import { CreateProposalTabs } from '../../components/NavigationTabs'
-import { MTLTEMP } from '../../constants'
+import { GOVERNANCE_ADDRESS, MTL, MTLTEMP, UNI_ADDRESS } from '../../constants'
 import AppBody from '../AppBody'
 import { ProposalActionDetail } from './ProposalActionDetail'
 import { ProposalAction, ProposalActionSelector, ProposalActionSelectorModal } from './ProposalActionSelector'
@@ -33,6 +33,9 @@ import { ProposalEditor } from './ProposalEditor'
 import { ProposalSubmissionModal } from './ProposalSubmissionModal'
 import { ButtonWhite } from '../../components/Button'
 import { parseEther } from 'ethers/lib/utils'
+import { getContract } from 'utils'
+import { abi as GOVERNANCE_ABI } from '@uniswap/governance/build/GovernorAlpha.json'
+import { addTransaction } from 'state/transactions/actions'
 
 const PageWrapper = styled(AutoColumn)`
   padding: 0px 8px 0px;
@@ -127,18 +130,17 @@ const ProposalContainer = styled.div`
   position: relative;
   max-width: 768px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-
-  border-radius: 28px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(12.9px);
-  -webkit-backdrop-filter: blur(12.9px);
+  background: #3fb6c011;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+    0px 24px 32px rgba(0, 0, 0, 0.01);
+  border-radius: 30px;
+  /* padding: 1rem; */
 `
 export default function CreateProposal() {
   const { account, chainId } = useWeb3React()
 
   const latestProposalId = useLatestProposalId(account ?? undefined) ?? '0'
-  const latestProposalData = useProposalData(latestProposalId)
+  //const latestProposalData = useProposalData(latestProposalId)
   const { votes: availableVotes } = useUserVotes2()
   const proposalThreshold: CurrencyAmount<Token> | undefined = useProposalThreshold()
 
@@ -151,6 +153,8 @@ export default function CreateProposal() {
   const [amountValue, setAmountValue] = useState('')
   const [titleValue, setTitleValue] = useState('')
   const [bodyValue, setBodyValue] = useState('')
+  const [web3Provider, setWeb3Provider] = useState<any>(null)
+  const [accountAddress, setAccountAddress] = useState<string>('')
 
   const handleActionSelectorClick = useCallback(() => {
     setModalOpen(true)
@@ -206,7 +210,37 @@ export default function CreateProposal() {
     },
     [setBodyValue]
   )
-
+  useEffect(() => {
+    const provider = window.ethereum
+    if (typeof provider !== 'undefined') {
+      //Metamask is installed
+      provider
+        .request({ method: 'eth_requestAccounts' })
+        .then((accounts: any) => {
+          console.log('All accounts: ', accounts)
+          setAccountAddress(accounts[0])
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+    }
+    const web3Provider = new Web3Provider(window.ethereum)
+    setWeb3Provider(web3Provider)
+  }, [])
+  async function OnCreateProposal(args: any): Promise<any> {
+    try {
+      if (!web3Provider && !accountAddress && !args) return
+      const governanceContract = getContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, web3Provider, accountAddress)
+      // call borrowAmount function to borrow the amount
+      const tx = await governanceContract.propose(...args)
+      const reciept = await tx.wait()
+      console.log('proposal successful!', reciept)
+      return reciept
+    } catch (error) {
+      console.log('Error in Borrowing: ', error)
+      return false
+    }
+  }
   const isFormInvalid = useMemo(
     () =>
       Boolean(
@@ -224,14 +258,14 @@ export default function CreateProposal() {
     availableVotes && proposalThreshold && JSBI.greaterThanOrEqual(availableVotes.quotient, proposalThreshold.quotient)
   )
 
-  const createProposalCallback = useCreateProposalCallback()
+  // const createProposalCallback = useCreateProposalCallback()
 
   const handleCreateProposal = async () => {
     setAttempting(true)
 
     const createProposalData: CreateProposalData = {} as CreateProposalData
     console.log('First')
-    if (!createProposalCallback || !proposalAction || !currencyValue) return
+    if (!proposalAction || !currencyValue) return
     console.log('Second')
 
     const tokenAmount = tryParseCurrencyAmount(amountValue, currencyValue)
@@ -240,7 +274,7 @@ export default function CreateProposal() {
     // if (!tokenAmount) return
     console.log('Third')
 
-    createProposalData.targets = [currencyValue.address || '0x7Ea61378369Ea8Ec735A2C710b455Ec2307F4bfA']
+    createProposalData.targets = [currencyValue.address || UNI_ADDRESS]
     createProposalData.values = ['0']
     createProposalData.description = `# ${titleValue}
 
@@ -270,11 +304,22 @@ ${bodyValue}
       createProposalData.calldatas[i] = defaultAbiCoder.encode(types[i], values[i])
     }
 
-    const hash = await createProposalCallback(createProposalData ?? undefined)?.catch(() => {
-      setAttempting(false)
-    })
+    // const hash = await createProposalCallback(createProposalData ?? undefined)?.catch(() => {
+    //   setAttempting(false)
+    // })
+    const args = [
+      createProposalData.targets,
+      createProposalData.values,
+      createProposalData.signatures,
+      createProposalData.calldatas,
+      createProposalData.description
+    ]
+    const reciept = await OnCreateProposal(args)
 
-    if (hash) setHash(hash)
+    if (hash) {
+      setHash(reciept?.transactionHash)
+      setAttempting(false)
+    }
   }
 
   return (

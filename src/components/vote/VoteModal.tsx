@@ -10,10 +10,11 @@ import { X, ArrowUpCircle } from 'react-feather'
 import { ButtonPrimary } from '../Button'
 import Circle from '../../assets/images/blue-loader.svg'
 import { useVoteCallback, useUserVotes } from '../../state/governance/hooks'
-import { getEtherscanLink } from '../../utils'
+import { getContract, getEtherscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
 import { TokenAmount } from '@uniswap/sdk'
-
+import { GOVERNANCE_ADDRESS } from '../../constants'
+import { abi as GOVERNANCE_ABI } from '@uniswap/governance/build/GovernorAlpha.json'
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 24px;
@@ -33,23 +34,37 @@ const ConfirmOrLoadingWrapper = styled.div`
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 60px 0;
 `
-
+async function OnCastVote(web3Provider: any, accountAddress: any, proposalId: any, vote: boolean): Promise<any> {
+  try {
+    if (!web3Provider && !accountAddress) return
+    const governanceContract = getContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, web3Provider, accountAddress)
+    // call borrowAmount function to borrow the amount
+    const tx = await governanceContract.castVote(proposalId, vote)
+    const reciept = await tx.wait()
+    console.log('proposal successful!', reciept)
+    return reciept
+  } catch (error) {
+    console.log('Error in Borrowing: ', error)
+    return false
+  }
+}
 interface VoteModalProps {
   isOpen: boolean
   onDismiss: () => void
   support: boolean // if user is for or against proposal
   proposalId: string | undefined // id for the proposal to vote on
+  provider: any
 }
 
-export default function VoteModal({ isOpen, onDismiss, proposalId, support }: VoteModalProps) {
-  const { chainId } = useActiveWeb3React()
+export default function VoteModal({ isOpen, onDismiss, proposalId, support, provider }: VoteModalProps) {
+  const { account, chainId } = useActiveWeb3React()
   const {
     voteCallback
   }: {
     voteCallback: (proposalId: string | undefined, support: boolean) => Promise<string> | undefined
   } = useVoteCallback()
   const availableVotes: TokenAmount | undefined = useUserVotes()
-
+  console.log('VoteModal', proposalId, support)
   // monitor call to help UI loading state
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState<boolean>(false)
@@ -71,13 +86,15 @@ export default function VoteModal({ isOpen, onDismiss, proposalId, support }: Vo
     if (!voteCallback) return
 
     // try delegation and store hash
-    const hash = await voteCallback(proposalId, support)?.catch(error => {
-      setAttempting(false)
-      console.log(error)
-    })
 
-    if (hash) {
-      setHash(hash)
+    // const hash = await voteCallback(proposalId, support)?.catch(error => {
+    //   setAttempting(false)
+    //   console.log(error)
+    // })
+    const reciept = await OnCastVote(provider, account, proposalId, support)
+    if (reciept) {
+      setHash(reciept.transactionHash)
+      setAttempting(false)
     }
   }
 

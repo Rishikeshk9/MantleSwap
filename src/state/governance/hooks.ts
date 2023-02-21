@@ -449,8 +449,7 @@ export function useUserVotesAsOfBlock(block: number | undefined): TokenAmount | 
 export function useVoteCallback(): {
   voteCallback: (proposalId: string | undefined, support: boolean) => undefined | Promise<string>
 } {
-  const { account } = useActiveWeb3React()
-
+  const { account, chainId, library } = useActiveWeb3React()
   const govContract = useGovernanceV0Contract()
   const addTransaction = useTransactionAdder()
 
@@ -544,7 +543,7 @@ export function useCreateProposalCallback(): (
         createProposalData.calldatas,
         createProposalData.description
       ]
-
+      console.log('Args: ', args)
       return latestGovernanceContract.estimateGas.propose(...args).then(estimatedGasLimit => {
         return latestGovernanceContract
           .propose(...args, { gasLimit: calculateGasMargin(estimatedGasLimit) })
