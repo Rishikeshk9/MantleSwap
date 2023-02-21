@@ -137,11 +137,11 @@ export default function Vote() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Uniswap Governance</TYPE.white>
+                <TYPE.white fontWeight={600}>MantleSwap Governance</TYPE.white>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  UNI tokens represent voting shares in Uniswap governance. You can vote on each proposal yourself or
+                  MTL tokens represent voting shares in MantleSwap governance. You can vote on each proposal yourself or
                   delegate your votes to a third party.
                 </TYPE.white>
               </RowBetween>
@@ -150,7 +150,7 @@ export default function Vote() {
                 href="https://uniswap.org/blog/uni"
                 target="_blank"
               >
-                <TYPE.white fontSize={14}>Read more about Uniswap governance</TYPE.white>
+                <TYPE.white fontSize={14}>Read more about MantleSwap governance</TYPE.white>
               </ExternalLink>
             </AutoColumn>
           </CardSection>
@@ -182,6 +182,18 @@ export default function Vote() {
             <TYPE.body fontWeight={500} mr="6px">
               <FormattedCurrencyAmount currencyAmount={uniBalance} /> Votes
             </TYPE.body>
+          ) : (
+            ''
+          )}
+          {availableVotes ? (
+            <ButtonPrimary
+              as={Link}
+              to="/vote/create-proposal"
+              style={{ width: 'fit-content', borderRadius: '8px' }}
+              padding="6px 8px"
+            >
+              Create Proposal
+            </ButtonPrimary>
           ) : (
             ''
           )}
@@ -221,7 +233,7 @@ export default function Vote() {
         )}
         {allProposals?.map((p: ProposalData, i) => {
           return (
-            <Proposal as={Link} to={'/vote/' + p.id} key={i}>
+            <Proposal as={Link} to={'/vote/id/' + p.id} key={i}>
               <ProposalNumber>{p.id}</ProposalNumber>
               <ProposalTitle>{p.title}</ProposalTitle>
               <ProposalStatus status={p.status}>{p.status}</ProposalStatus>

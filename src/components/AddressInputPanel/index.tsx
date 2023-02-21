@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, ReactNode } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import useENS from '../../hooks/useENS'
 import { useActiveWeb3React } from '../../hooks'
@@ -68,13 +68,15 @@ const Input = styled.input<{ error?: boolean }>`
 export default function AddressInputPanel({
   id,
   value,
-  onChange
+  onChange,
+  label
 }: {
   id?: string
   // the typed string value
   value: string
   // triggers whenever the typed value changes
   onChange: (value: string) => void
+  label?: ReactNode
 }) {
   const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)

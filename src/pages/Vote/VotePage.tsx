@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 
@@ -24,6 +24,8 @@ import { GreyCard } from '../../components/Card'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { BigNumber } from 'ethers'
+
+import { Web3Provider } from '@ethersproject/providers'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -115,7 +117,8 @@ export default function VotePage({
 
   // update support based on button interactions
   const [support, setSupport] = useState<boolean>(true)
-
+  const [web3Provider, setWeb3Provider] = useState<any>(null)
+  const [accountAddress, setAccountAddress] = useState<string>('')
   // modal for casting votes
   const showVoteModal = useModalOpen(ApplicationModal.VOTE)
   const toggleVoteModal = useToggleVoteModal()
@@ -171,10 +174,33 @@ export default function VotePage({
     }
     return <span>{content}</span>
   }
+  useEffect(() => {
+    const provider = window.ethereum
+    if (typeof provider !== 'undefined') {
+      //Metamask is installed
+      provider
+        .request({ method: 'eth_requestAccounts' })
+        .then((accounts: any) => {
+          console.log('All accounts: ', accounts)
+          setAccountAddress(accounts[0])
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+    }
+    const web3Provider = new Web3Provider(window.ethereum)
+    setWeb3Provider(web3Provider)
+  }, [])
 
   return (
     <PageWrapper gap="lg" justify="center">
-      <VoteModal isOpen={showVoteModal} onDismiss={toggleVoteModal} proposalId={proposalData?.id} support={support} />
+      <VoteModal
+        isOpen={showVoteModal}
+        onDismiss={toggleVoteModal}
+        proposalId={proposalData?.id}
+        support={support}
+        provider={web3Provider}
+      />
       <DelegateModal isOpen={showDelegateModal} onDismiss={toggleDelegateModal} title="Unlock Votes" />
       <ProposalInfo gap="lg" justify="start">
         <RowBetween style={{ width: '100%' }}>

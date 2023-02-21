@@ -7,9 +7,11 @@ export declare class Currency {
     readonly decimals: number;
     readonly symbol?: string;
     readonly name?: string;
+    readonly address?: string;
     /**
      * The only instance of the base class `Currency`.
      */
+    readonly isToken?: boolean;
     static readonly ETHER: Currency;
     /**
      * Constructs an instance of the base class `Currency`. The only instance of the base class `Currency` is `Currency.ETHER`.

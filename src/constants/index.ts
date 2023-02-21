@@ -27,17 +27,26 @@ export const AVERAGE_BLOCK_TIME_IN_SECS = 13
 export const PROPOSAL_LENGTH_IN_BLOCKS = 40_320
 export const PROPOSAL_LENGTH_IN_SECS = AVERAGE_BLOCK_TIME_IN_SECS * PROPOSAL_LENGTH_IN_BLOCKS
 
-export const GOVERNANCE_ADDRESS = '0xd3Bc57916A77Ef4c4997E34d2d762bE320219BBb'
+export const GOVERNANCE_ADDRESS = '0xe1A0b3F13a9E742d0a09B2a308BF1e9314d9145B'
 
-export const TIMELOCK_ADDRESS = '0x27252A8d6ab3F79774759222A590a72Ae5c25d1D'
+export const TIMELOCK_ADDRESS = '0x5A4E5d6FA5e9fb3e1B920B61E2CB24dC816acA9B'
 
-const UNI_ADDRESS = '0x7Ea61378369Ea8Ec735A2C710b455Ec2307F4bfA'
+export const UNI_ADDRESS = '0xAAf8a38363943309cb0B7999344653C540e1E985'
 export const MTL: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'MTL', 'Uniswap'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'MTL', 'Uniswap'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, UNI_ADDRESS, 18, 'MTL', 'Uniswap'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'MTL', 'Uniswap'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'MTL', 'Uniswap'),
+  [ChainId.MANTLE_TESTNET]: new Token(ChainId.MANTLE_TESTNET, UNI_ADDRESS, 18, 'MTL', 'Uniswap')
+}
+
+export const MTLTEMP: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.MANTLE_TESTNET]: new Token(ChainId.MANTLE_TESTNET, UNI_ADDRESS, 18, 'MTL', 'Uniswap')
 }
 
@@ -315,5 +324,5 @@ export const networks = [
   // }
 ]
 
-export const LOAN_CONTRACT = '0xb09dEE31be550bA6646162e58AAbDCC7AfaD6D2d'
-export const GARGANTUA_TOKEN = '0xbC43694f435b7F79981D478f50bD022bf90c376A'
+export const LOAN_CONTRACT = '0xf3d68F4B244e3Ff6c50ad90E9A24077742d8E3a5'
+//export const GARGANTUA_TOKEN = '0xbC43694f435b7F79981D478f50bD022bf90c376A'
