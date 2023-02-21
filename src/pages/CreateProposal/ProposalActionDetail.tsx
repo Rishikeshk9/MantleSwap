@@ -72,9 +72,9 @@ export const ProposalActionDetail = ({
             onCurrencySelect={(currency: Currency) => onCurrencySelect(currency)}
             showMaxButton={false}
             showCommonBases={false}
-            // showCurrencyAmount={false}
+            // showCurrencyAmount={true}
             disableCurrencySelect={true}
-            hideBalance={true}
+            hideBalance={false}
             id="currency-input"
           />
         ) : null

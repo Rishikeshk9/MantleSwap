@@ -18,7 +18,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Row'
 
-import { GARGANTUA_TOKEN, LOAN_CONTRACT, ROUTER_ADDRESS } from '../../constants'
+import { LOAN_CONTRACT, ROUTER_ADDRESS, UNI_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -47,7 +47,7 @@ import { darken } from 'polished'
 import { Input as NumericalInput } from '../../components/LoanInput'
 import { formatEther, hexlify, parseEther } from 'ethers/lib/utils'
 import loanAbi from '../../constants/abis/loan-rewarder.json'
-import gargantuaAbi from '../../constants/abis/gargantuaErc20.json'
+import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
   color: ${({ error, theme }) => (error ? theme.red1 : theme.text1)};
@@ -228,11 +228,15 @@ export default function Loan({
   const [lenderData] = useLenderAmountCallback()
   const addTransaction = useTransactionAdder()
   async function checkGGTBalance() {
+    console.log('MTL Balance', accountAddress)
+
     try {
-      const ggtContract = getContract(GARGANTUA_TOKEN, gargantuaAbi, web3Provider, accountAddress)
+      const ggtContract = getContract(UNI_ADDRESS, UNI_ABI, web3Provider, accountAddress)
+      console.log('GGT Contract', ggtContract)
+
       const balance = await ggtContract.balanceOf(accountAddress)
-      console.log('Gargantua Balance', balance)
-      setGgtBalance(String(parseInt(balance._hex)))
+      console.log('MTL Balance', balance)
+      setGgtBalance(formatEther(balance._hex).toString())
     } catch (error) {
       console.log('Error in fetching Balance: ', error)
     }
@@ -289,7 +293,7 @@ export default function Loan({
         .then((accounts: any) => {
           console.log('All accounts: ', accounts)
           setAccountAddress(accounts[0])
-          checkGGTBalance()
+
           fetchBorrowerDetails(accounts[0], new Web3Provider(window.ethereum))
         })
         .catch((err: any) => {
@@ -299,6 +303,10 @@ export default function Loan({
     const web3Provider = new Web3Provider(window.ethereum)
     setWeb3Provider(web3Provider)
   }, [])
+
+  useEffect(() => {
+    if (web3Provider && accountAddress) checkGGTBalance()
+  }, [web3Provider, accountAddress])
 
   async function OnAddLend(lendValue: string) {
     if (!web3Provider && !accountAddress && lendValue !== '0') return
@@ -312,7 +320,7 @@ export default function Loan({
   async function OnRevokeLend(lendValue: string) {
     if (!web3Provider && !accountAddress && lendValue !== '0') return
     console.log('Check StakeValue: ', lendValue)
-    const gargantuaContract = getContract(GARGANTUA_TOKEN, gargantuaAbi, web3Provider, accountAddress)
+    const gargantuaContract = getContract(UNI_ADDRESS, UNI_ABI, web3Provider, accountAddress)
     // check accountAddress for Gargantua token balance and allowance of stakeValue amount and approve the LOAN_CONTRACT to spend the stakeValue amount if not already approved
     const gargantuaBalance = await gargantuaContract.balanceOf(accountAddress)
     const gargantuaAllowance = await gargantuaContract.allowance(accountAddress, LOAN_CONTRACT)
@@ -648,7 +656,7 @@ export default function Loan({
                 <BlueCard>
                   <AutoColumn gap="2px">
                     <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      <b>Pool Token: </b> {ggtBalance} GGT{' '}
+                      <b>Pool Token: </b> {ggtBalance} MTL{' '}
                     </TYPE.link>
                   </AutoColumn>
                 </BlueCard>

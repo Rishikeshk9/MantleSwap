@@ -6,7 +6,7 @@ import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build
 import { ChainId, WETH } from '@uniswap/sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { useMemo } from 'react'
-import { GOVERNANCE_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, MTL, LOAN_CONTRACT, GARGANTUA_TOKEN } from '../constants'
+import { GOVERNANCE_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, MTL, LOAN_CONTRACT, UNI_ADDRESS } from '../constants'
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS
@@ -16,7 +16,6 @@ import ENS_ABI from '../constants/abis/ens-registrar.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import LOAN_ABI from '../constants/abis/loan-rewarder.json'
 import ERC20_ABI from '../constants/abis/erc20.json'
-import GGT_ABI from '../constants/abis/gargantuaErc20.json'
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator'
 import UNISOCKS_ABI from '../constants/abis/unisocks.json'
 import WETH_ABI from '../constants/abis/weth.json'
@@ -62,7 +61,7 @@ export function useLoanContract(withSignerIfPossible?: boolean): Contract | null
 }
 
 export function useGGTContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract(GARGANTUA_TOKEN, GGT_ABI, withSignerIfPossible)
+  return useContract(UNI_ADDRESS, UNI_ABI, withSignerIfPossible)
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
