@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { ButtonDropdown } from 'components/Button'
 import Column from 'components/Column'
 import Modal from 'components/Modal'
@@ -11,7 +10,7 @@ import { CloseIcon } from 'theme'
 
 export enum ProposalAction {
   TRANSFER_TOKEN = 'Transfer Token',
-  APPROVE_TOKEN = 'Approve Token',
+  APPROVE_TOKEN = 'Approve Token'
 }
 
 interface ProposalActionSelectorModalProps {
@@ -28,13 +27,13 @@ const ContentWrapper = styled(Column)`
 const ActionSelectorHeader = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.text1};
 `
 
 const ActionDropdown = styled(ButtonDropdown)`
   padding: 0px;
   background-color: transparent;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.text1};
   font-size: 1.25rem;
 
   :hover,
@@ -51,8 +50,8 @@ const ProposalActionSelectorFlex = styled.div`
   display: flex;
   flex-flow: column nowrap;
   border-radius: 20px;
-  border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-  background-color: ${({ theme }) => theme.deprecated_bg1};
+  border: 0px solid;
+  background-color: ${({ theme }) => theme.bg1};
 `
 
 const ProposalActionSelectorContainer = styled.div`
@@ -66,7 +65,7 @@ const ProposalActionSelectorContainer = styled.div`
 export const ProposalActionSelector = ({
   className,
   onClick,
-  proposalAction,
+  proposalAction
 }: {
   className?: string
   onClick: () => void
@@ -75,9 +74,7 @@ export const ProposalActionSelector = ({
   return (
     <ProposalActionSelectorFlex>
       <ProposalActionSelectorContainer className={className}>
-        <ActionSelectorHeader>
-          <Trans>Proposed Action</Trans>
-        </ActionSelectorHeader>
+        <ActionSelectorHeader>Proposed Action</ActionSelectorHeader>
         <ActionDropdown onClick={onClick}>{proposalAction}</ActionDropdown>
       </ProposalActionSelectorContainer>
     </ProposalActionSelectorFlex>
@@ -87,7 +84,7 @@ export const ProposalActionSelector = ({
 export function ProposalActionSelectorModal({
   isOpen,
   onDismiss,
-  onProposalActionSelect,
+  onProposalActionSelect
 }: ProposalActionSelectorModalProps) {
   const handleProposalActionSelect = useCallback(
     (proposalAction: ProposalAction) => {
@@ -103,7 +100,7 @@ export function ProposalActionSelectorModal({
         <PaddedColumn gap="16px">
           <RowBetween>
             <Text fontWeight={500} fontSize={16}>
-              <Trans>Select an action</Trans>
+              Select an action
             </Text>
             <CloseIcon onClick={onDismiss} />
           </RowBetween>
@@ -111,16 +108,12 @@ export function ProposalActionSelectorModal({
         <Separator />
         <MenuItem onClick={() => handleProposalActionSelect(ProposalAction.TRANSFER_TOKEN)}>
           <Column>
-            <Text fontWeight={500}>
-              <Trans>Transfer Token</Trans>
-            </Text>
+            <Text fontWeight={500}>Transfer Token</Text>
           </Column>
         </MenuItem>
         <MenuItem onClick={() => handleProposalActionSelect(ProposalAction.APPROVE_TOKEN)}>
           <Column>
-            <Text fontWeight={500}>
-              <Trans>Approve Token</Trans>
-            </Text>
+            <Text fontWeight={500}>Approve Token</Text>
           </Column>
         </MenuItem>
       </ContentWrapper>

@@ -2,8 +2,7 @@ import { parse } from 'qs'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state/hooks'
-
-import { updateUserDarkMode } from '../../state/user/reducer'
+import { updateUserDarkMode } from 'state/user/actions'
 
 export default function DarkModeQueryParamReader(): null {
   const { search } = useLocation()
@@ -15,7 +14,7 @@ export default function DarkModeQueryParamReader(): null {
 
     const parsed = parse(search, {
       parseArrays: false,
-      ignoreQueryPrefix: true,
+      ignoreQueryPrefix: true
     })
 
     const theme = parsed.theme

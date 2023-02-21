@@ -1,12 +1,12 @@
 /**
  * Preset styles of the Rebass Text component
  */
-
+import React from 'react'
 import { Text, TextProps as TextPropsOriginal } from 'rebass'
 import styled from 'styled-components/macro'
 
 const TextWrapper = styled(Text).withConfig({
-  shouldForwardProp: (prop) => prop !== 'color',
+  shouldForwardProp: prop => prop !== 'color'
 })<{ color: keyof string }>`
   color: ${({ color, theme }) => (theme as any)[color]};
 `
@@ -103,5 +103,5 @@ export const ThemedText = {
   },
   DeprecatedError({ error, ...props }: { error: boolean } & TextProps) {
     return <TextWrapper fontWeight={500} color={error ? 'accentFailure' : 'textSecondary'} {...props} />
-  },
+  }
 }

@@ -6,6 +6,7 @@ import { Currency } from './currency';
 export declare class Token extends Currency {
     readonly chainId: ChainId;
     readonly address: string;
+    readonly isToken: true;
     constructor(chainId: ChainId, address: string, decimals: number, symbol?: string, name?: string);
     /**
      * Returns true if the two tokens are equivalent, i.e. have the same chainId and address.

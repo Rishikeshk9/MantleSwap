@@ -32,6 +32,7 @@ import Swap from './Swap'
 import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
+import CreateProposal from './CreateProposal'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -136,7 +137,8 @@ export default function App() {
               <Route exact strict path="/migrate/v1" component={MigrateV1} />
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
-              <Route exact strict path="/vote/:id" component={VotePage} />
+              <Route exact strict path="/vote/id/:id" component={VotePage} />
+              <Route exact strict path="/vote/create-proposal" component={CreateProposal} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

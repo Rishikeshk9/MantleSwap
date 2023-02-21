@@ -1,5 +1,4 @@
-import { Trans } from '@lingui/macro'
-import { Currency } from '@uniswap/sdk-core'
+import { Currency } from '@uniswap/sdk'
 import AddressInputPanel from 'components/AddressInputPanel'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import React from 'react'
@@ -9,7 +8,7 @@ import { ProposalAction } from './ProposalActionSelector'
 
 enum ProposalActionDetailField {
   ADDRESS,
-  CURRENCY,
+  CURRENCY
 }
 
 const ProposalActionDetailContainer = styled.div`
@@ -27,7 +26,7 @@ export const ProposalActionDetail = ({
   toAddress,
   onCurrencySelect,
   onAmountInput,
-  onToAddressInput,
+  onToAddressInput
 }: {
   className?: string
   proposalAction: ProposalAction
@@ -42,21 +41,21 @@ export const ProposalActionDetail = ({
     [ProposalAction.TRANSFER_TOKEN]: [
       {
         type: ProposalActionDetailField.ADDRESS,
-        label: <Trans>To</Trans>,
+        label: 'To'
       },
       {
-        type: ProposalActionDetailField.CURRENCY,
-      },
+        type: ProposalActionDetailField.CURRENCY
+      }
     ],
     [ProposalAction.APPROVE_TOKEN]: [
       {
         type: ProposalActionDetailField.ADDRESS,
-        label: <Trans>To</Trans>,
+        label: 'To'
       },
       {
-        type: ProposalActionDetailField.CURRENCY,
-      },
-    ],
+        type: ProposalActionDetailField.CURRENCY
+      }
+    ]
   }
 
   return (
@@ -73,8 +72,8 @@ export const ProposalActionDetail = ({
             onCurrencySelect={(currency: Currency) => onCurrencySelect(currency)}
             showMaxButton={false}
             showCommonBases={false}
-            showCurrencyAmount={false}
-            disableNonToken={true}
+            // showCurrencyAmount={false}
+            disableCurrencySelect={true}
             hideBalance={true}
             id="currency-input"
           />

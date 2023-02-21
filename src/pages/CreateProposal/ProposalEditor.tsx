@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
-import { t, Trans } from '@lingui/macro'
-import { ResizingTextArea, TextInput } from 'components/TextInput'
+import { ResizingTextArea, TextInput } from '../../components/TextInput'
 import React, { memo } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components/macro'
@@ -8,7 +6,7 @@ import styled from 'styled-components/macro'
 const ProposalEditorHeader = styled(Text)`
   font-size: 14px;
   font-weight: 500;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.text2};
 `
 
 const ProposalTitle = memo(styled(TextInput)`
@@ -20,8 +18,8 @@ const ProposalEditorContainer = styled.div`
   margin-top: 10px;
   padding: 0.75rem 1rem 0.75rem 1rem;
   border-radius: 20px;
-  border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-  background-color: ${({ theme }) => theme.deprecated_bg1};
+  border: 1px solid ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.bg1};
 `
 
 export const ProposalEditor = ({
@@ -29,7 +27,7 @@ export const ProposalEditor = ({
   title,
   body,
   onTitleInput,
-  onBodyInput,
+  onBodyInput
 }: {
   className?: string
   title: string
@@ -53,10 +51,8 @@ Insert your conclusion here
 
   return (
     <ProposalEditorContainer className={className}>
-      <ProposalEditorHeader>
-        <Trans>Proposal</Trans>
-      </ProposalEditorHeader>
-      <ProposalTitle value={title} onUserInput={onTitleInput} placeholder={t`Proposal Title`} fontSize="1.25rem" />
+      <ProposalEditorHeader>Proposal</ProposalEditorHeader>
+      <ProposalTitle value={title} onUserInput={onTitleInput} placeholder={`Proposal Title`} fontSize="1.25rem" />
       <hr />
       <ResizingTextArea value={body} onUserInput={onBodyInput} placeholder={bodyPlaceholder} fontSize="1rem" />
     </ProposalEditorContainer>

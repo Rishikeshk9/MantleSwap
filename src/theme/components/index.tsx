@@ -1,6 +1,3 @@
-import { Trans } from '@lingui/macro'
-import { outboundLink } from 'components/analytics'
-import { MOBILE_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import React, {
   forwardRef,
@@ -9,7 +6,7 @@ import React, {
   ReactNode,
   useCallback,
   useImperativeHandle,
-  useState,
+  useState
 } from 'react'
 import {
   ArrowLeft,
@@ -17,20 +14,17 @@ import {
   Copy,
   ExternalLink as ExternalLinkIconFeather,
   Link as LinkIconFeather,
-  X,
+  X
 } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled, { css, keyframes } from 'styled-components/macro'
-import { flexRowNoWrap } from 'theme/styles'
-import { Z_INDEX } from 'theme/zIndex'
 
 import { ReactComponent as TooltipTriangle } from '../../assets/svg/tooltip_triangle.svg'
-import { anonymizeLink } from '../../utils/anonymizeLink'
 
 // TODO: Break this file into a components folder
 
 export const CloseIcon = styled(X)<{ onClick: () => void }>`
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.text2};
   cursor: pointer;
 `
 
@@ -44,7 +38,7 @@ export const IconWrapper = styled.div<{ stroke?: string; size?: string; marginRi
   margin-right: ${({ marginRight }) => marginRight ?? 0};
   margin-left: ${({ marginLeft }) => marginLeft ?? 0};
   & > * {
-    stroke: ${({ theme, stroke }) => stroke ?? theme.accentActive};
+    stroke: ${({ theme, stroke }) => stroke ?? theme.text3};
   }
 `
 
@@ -55,7 +49,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
   background: none;
 
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  color: ${({ theme, disabled }) => (disabled ? theme.textSecondary : theme.accentAction)};
+  color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.red2)};
   font-weight: 500;
 
   :hover {
@@ -80,12 +74,12 @@ export const ButtonText = styled.button`
   margin: 0;
   background: none;
   cursor: pointer;
-  transition-duration: ${({ theme }) => theme.transition.duration.fast};
+  transition-duration: 1;
   transition-timing-function: ease-in-out;
   transition-property: opacity, color, background-color;
 
   :hover {
-    opacity: ${({ theme }) => theme.opacity.hover};
+    opacity: 10;
   }
 
   :focus {
@@ -96,19 +90,19 @@ export const ButtonText = styled.button`
 export const ClickableStyle = css`
   text-decoration: none;
   cursor: pointer;
-  transition-duration: ${({ theme }) => theme.transition.duration.fast};
+  transition-duration: 1};
 
   :hover {
-    opacity: ${({ theme }) => theme.opacity.hover};
+    opacity: 10;
   }
   :active {
-    opacity: ${({ theme }) => theme.opacity.click};
+    opacity: 20;
   }
 `
 
 export const LinkStyle = css`
-  color: ${({ theme }) => theme.accentAction};
-  stroke: ${({ theme }) => theme.accentAction};
+  color: ${({ theme }) => theme.red2};
+  stroke: ${({ theme }) => theme.red2};
   font-weight: 500;
 `
 
@@ -140,7 +134,7 @@ const CopyIcon = styled(Copy)`
   ${IconStyle}
   ${ClickableStyle}
   ${LinkStyle}
-  stroke: ${({ theme }) => theme.accentAction};
+  stroke: ${({ theme }) => theme.red2};
 `
 
 const rotateImg = keyframes`
@@ -162,19 +156,11 @@ export const UniTokenAnimated = styled.img`
 function handleClickExternalLink(event: React.MouseEvent<HTMLAnchorElement>) {
   const { target, href } = event.currentTarget
 
-  const anonymizedHref = anonymizeLink(href)
-
   // don't prevent default, don't redirect if it's a new tab
   if (target === '_blank' || event.ctrlKey || event.metaKey) {
-    outboundLink({ label: anonymizedHref }, () => {
-      console.debug('Fired outbound link event', anonymizedHref)
-    })
   } else {
     event.preventDefault()
     // send a ReactGA event and then trigger a location change
-    outboundLink({ label: anonymizedHref }, () => {
-      window.location.href = anonymizedHref
-    })
   }
 }
 
@@ -223,7 +209,7 @@ const ToolTipWrapper = styled.div<{ isCopyContractTooltip?: boolean; tooltipX?: 
   left: ${({ isCopyContractTooltip, tooltipX }) =>
     isCopyContractTooltip && (tooltipX ? `${tooltipX - TOOLTIP_WIDTH / 2}px` : '50%')};
   transform: translate(5px, 32px);
-  z-index: ${Z_INDEX.tooltip};
+  z-index: -1;
 `
 
 const StyledTooltipTriangle = styled(TooltipTriangle)`
@@ -286,13 +272,13 @@ export function CopyLinkIcon({ toCopy }: { toCopy: string }) {
 }
 
 const FullAddress = styled.span`
-  @media only screen and (max-width: ${MOBILE_MEDIA_BREAKPOINT}) {
+  @media only screen and (max-width: 768px) {
     display: none;
   }
 `
 const TruncatedAddress = styled.span`
   display: none;
-  @media only screen and (max-width: ${MOBILE_MEDIA_BREAKPOINT}) {
+  @media only screen and (max-width: 480px) {
     display: flex;
   }
 `
@@ -306,7 +292,7 @@ const CopyAddressRow = styled.div<{ isClicked: boolean }>`
   justify-content: center;
   display: flex;
   gap: 6px;
-  ${({ theme, isClicked }) => isClicked && `opacity: ${theme.opacity.click} !important`}
+  ${({ theme, isClicked }) => isClicked && `opacity: 20 !important`}
 `
 
 const CopyContractAddressWrapper = styled.div`
@@ -341,7 +327,7 @@ export function CopyContractAddress({ address }: { address: string }) {
 
 const CopyHelperContainer = styled(LinkStyledButton)<{ clicked: boolean }>`
   ${({ clicked }) => !clicked && ClickableStyle};
-  color: ${({ color, theme }) => color || theme.accentAction};
+  color: ${({ color, theme }) => color || theme.red2};
   padding: 0;
   flex-shrink: 0;
   display: flex;
@@ -350,19 +336,19 @@ const CopyHelperContainer = styled(LinkStyledButton)<{ clicked: boolean }>`
   :active,
   :focus {
     text-decoration: none;
-    color: ${({ color, theme }) => color || theme.accentAction};
+    color: ${({ color, theme }) => color || theme.red2};
   }
 `
 
 const CopyHelperText = styled.span<{ fontSize: number }>`
-  ${flexRowNoWrap};
+  ${({ theme }) => theme.flexRowNoWrap};
   font-size: ${({ fontSize }) => fontSize + 'px'};
   font-weight: 400;
   align-items: center;
 `
 
 const CopiedIcon = styled(CheckCircle)`
-  color: ${({ theme }) => theme.accentSuccess};
+  color: ${({ theme }) => theme.green1};
   stroke-width: 1.5px;
 `
 interface CopyHelperProps {
@@ -389,7 +375,7 @@ export const CopyHelper = forwardRef<CopyHelperRefType, CopyHelperProps>(
       gap = 12,
       iconPosition = 'left',
       iconColor,
-      children,
+      children
     }: CopyHelperProps,
     ref
   ) => {
@@ -401,7 +387,7 @@ export const CopyHelper = forwardRef<CopyHelperRefType, CopyHelperProps>(
     useImperativeHandle(ref, () => ({
       forceCopy() {
         copy()
-      },
+      }
     }))
 
     const BaseIcon = isCopied ? CopiedIcon : link ? LinkIconFeather : Copy
@@ -410,7 +396,7 @@ export const CopyHelper = forwardRef<CopyHelperRefType, CopyHelperProps>(
       <CopyHelperContainer onClick={copy} color={color} clicked={isCopied}>
         <div style={{ display: 'flex', flexDirection: 'row', gap }}>
           {iconPosition === 'left' && <BaseIcon size={iconSize} strokeWidth={1.5} color={iconColor} />}
-          <CopyHelperText fontSize={fontSize}>{isCopied ? <Trans>Copied!</Trans> : children}</CopyHelperText>
+          <CopyHelperText fontSize={fontSize}>{isCopied ? `Copied!` : children}</CopyHelperText>
           {iconPosition === 'right' && <BaseIcon size={iconSize} strokeWidth={1.5} color={iconColor} />}
         </div>
       </CopyHelperContainer>
@@ -441,7 +427,7 @@ export const SpinnerSVG = styled.svg`
 `
 
 const BackArrowLink = styled(StyledInternalLink)`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.primaryText1};
 `
 export function BackArrow({ to }: { to: string }) {
   return (
@@ -457,27 +443,27 @@ export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
 `
 
 export const HideSmall = styled.span`
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
 
 export const HideExtraSmall = styled.span`
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
 `
 
 export const SmallOnly = styled.span`
   display: none;
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: block;
   `};
 `
 
 export const MediumOnly = styled.span`
   display: none;
-  @media (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+  @media (max-width: 785px) {
     display: block;
   }
 `
@@ -485,10 +471,10 @@ export const MediumOnly = styled.span`
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.backgroundOutline};
+  background-color: ${({ theme }) => theme.bg3};
 `
 
 export const GlowEffect = styled.div`
   border-radius: 32px;
-  box-shadow: ${({ theme }) => theme.networkDefaultShadow};
+  box-shadow: ${({ theme }) => theme.shadow1};
 `

@@ -188,7 +188,7 @@ export default function Vote() {
           {availableVotes ? (
             <ButtonPrimary
               as={Link}
-              to="/create-proposal"
+              to="/vote/create-proposal"
               style={{ width: 'fit-content', borderRadius: '8px' }}
               padding="6px 8px"
             >
@@ -233,7 +233,7 @@ export default function Vote() {
         )}
         {allProposals?.map((p: ProposalData, i) => {
           return (
-            <Proposal as={Link} to={'/vote/' + p.id} key={i}>
+            <Proposal as={Link} to={'/vote/id/' + p.id} key={i}>
               <ProposalNumber>{p.id}</ProposalNumber>
               <ProposalTitle>{p.title}</ProposalTitle>
               <ProposalStatus status={p.status}>{p.status}</ProposalStatus>
