@@ -9,7 +9,7 @@ import { Text } from 'rebass'
 import { NavLink, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import { darken } from 'polished'
+import { darken, lighten, opacify } from 'polished'
 import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
@@ -226,24 +226,29 @@ const StyledNavLink = styled(NavLink).attrs({
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
-  border-radius: 3rem;
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
   text-decoration: none;
+  transition: all 300ms;
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
-
+  padding: 2px 10px;
   &.${activeClassName} {
-    border-radius: 12px;
     font-weight: 600;
     color: ${({ theme }) => theme.text1};
+    border-bottom: 3px solid rgba(255, 255, 255, 0.25);
+    padding: 2px 10px 4px;
   }
 
-  :hover,
   :focus {
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
+  :hover {
+    background: rgba(255, 255, 255, 0.15);
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 `
@@ -573,10 +578,27 @@ export default function Header() {
             MTL
           </StyledNavLink> */}
           <StyledNavLink id={`governance-nav-link`} to={'/vote'}>
-            Governance
+            Governance 🏛️
           </StyledNavLink>
           <StyledNavLink id={`loan-nav-link`} to={'/loan'}>
             Stake
+          </StyledNavLink>
+          <StyledNavLink id={`lottery-nav-link`} to={'/lotto'}>
+            Lottery{' '}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                borderRadius: '4px',
+                padding: '1px 5px',
+                fontSize: '12px',
+                display: 'flex',
+                opacity: 0.5,
+                alignItems: 'center',
+                margin: '0px 5px'
+              }}
+            >
+              WIP
+            </div>
           </StyledNavLink>
           {/* <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>

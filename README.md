@@ -43,10 +43,7 @@ Lastly, the governance feature on Mantleswap allows users and community members 
 ---
 
 The Lottery is an inspiration from Pancakeswap Lottery.
-The prizes for each lottery round come from three sources:
-Test the Lottery SCs :
-
-`https://explorer.testnet.mantle.xyz/address/0x665d834a05eaaCB8cAB97192FA23A72653E90ABF/write-contract#address-tabs`
+The prizes for each lottery round come from:
 
 ### Ticket Purchases
 
@@ -55,6 +52,10 @@ Test the Lottery SCs :
 ### Rollover Prizes
 
 After every round, if nobody wins in one of the prize brackets, the unclaimed BIT for that bracket rolls over into the next round and are redistributed among the prize pools.
+
+Test the Lottery Smart Contract(Verified & Tested on Mantle Explorer) :
+
+`https://explorer.testnet.mantle.xyz/address/0x665d834a05eaaCB8cAB97192FA23A72653E90ABF/write-contract#address-tabs`
 
 ## ⚗️ Liquidity Pools
 

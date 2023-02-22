@@ -33,6 +33,7 @@ import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, Redirec
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 import CreateProposal from './CreateProposal'
+import Lotto from './Lotto'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -139,6 +140,8 @@ export default function App() {
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route exact strict path="/vote/id/:id" component={VotePage} />
               <Route exact strict path="/vote/create-proposal" component={CreateProposal} />
+              <Route exact strict path="/lotto" component={Lotto} />
+
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
