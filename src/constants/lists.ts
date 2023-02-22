@@ -14,26 +14,28 @@ const CMC_STABLECOIN = 'stablecoin.cmc.eth'
 const KLEROS_LIST = 't2crtokens.eth'
 const GEMINI_LIST = 'https://www.gemini.com/uniswap/manifest.json'
 const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/sec-notice-list/master/ba-sec-list.json'
-
+const MANTLE_LIST =
+  'https://bafybeif7cqf3n5ygmdmvjiopnttvvqg5pztcmaguvz2la4nuzgphxzntza.ipfs.w3s.link/mantleswap-tokenlist.json'
 export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST]
 
 // lower index == higher priority for token import
 export const DEFAULT_LIST_OF_LISTS: string[] = [
-  COMPOUND_LIST,
-  AAVE_LIST,
-  SYNTHETIX_LIST,
-  UMA_LIST,
-  WRAPPED_LIST,
-  SET_LIST,
-  OPYN_LIST,
-  ROLL_LIST,
-  COINGECKO_LIST,
-  CMC_ALL_LIST,
-  CMC_STABLECOIN,
-  KLEROS_LIST,
-  GEMINI_LIST,
+  //COMPOUND_LIST,
+  // AAVE_LIST,
+  // SYNTHETIX_LIST,
+  // UMA_LIST,
+  // WRAPPED_LIST,
+  // SET_LIST,
+  // OPYN_LIST,
+  // ROLL_LIST,
+  // COINGECKO_LIST,
+  // CMC_ALL_LIST,
+  // CMC_STABLECOIN,
+  // KLEROS_LIST,
+  // GEMINI_LIST,
+  MANTLE_LIST,
   ...UNSUPPORTED_LIST_URLS // need to load unsupported tokens as well
 ]
 
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [GEMINI_LIST]
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [MANTLE_LIST]

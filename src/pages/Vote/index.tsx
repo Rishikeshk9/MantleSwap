@@ -82,6 +82,7 @@ const TextButton = styled(TYPE.main)`
 
 const AddressButton = styled.div`
   border: 1px solid ${({ theme }) => theme.bg3};
+  background: ${({ theme }) => theme.bg3};
   padding: 2px 4px;
   border-radius: 8px;
   display: flex;
@@ -145,23 +146,37 @@ export default function Vote() {
                   delegate your votes to a third party.
                 </TYPE.white>
               </RowBetween>
-              <ExternalLink
+              {/* <ExternalLink
                 style={{ color: 'white', textDecoration: 'underline' }}
                 href="https://uniswap.org/blog/uni"
                 target="_blank"
               >
                 <TYPE.white fontSize={14}>Read more about MantleSwap governance</TYPE.white>
-              </ExternalLink>
+              </ExternalLink> */}
             </AutoColumn>
           </CardSection>
           <CardBGImage />
           <CardNoise />
         </VoteCard>
       </TopSection>
+      <WrapSmall>
+        <TYPE.mediumHeader style={{ margin: '0.5rem 0.5rem 0.5rem 0', flexShrink: 0 }}>Proposals</TYPE.mediumHeader>
+        {(!allProposals || allProposals.length === 0) && !availableVotes && <Loader />}
+        {availableVotes ? (
+          <ButtonPrimary
+            as={Link}
+            to="/vote/create-proposal"
+            style={{ width: 'fit-content', borderRadius: '8px' }}
+            padding="6px 8px"
+          >
+            Create Proposal
+          </ButtonPrimary>
+        ) : (
+          ''
+        )}
+      </WrapSmall>
       <TopSection gap="2px">
         <WrapSmall>
-          <TYPE.mediumHeader style={{ margin: '0.5rem 0.5rem 0.5rem 0', flexShrink: 0 }}>Proposals</TYPE.mediumHeader>
-          {(!allProposals || allProposals.length === 0) && !availableVotes && <Loader />}
           {showUnlockVoting ? (
             <ButtonPrimary
               style={{ width: 'fit-content' }}
@@ -172,7 +187,7 @@ export default function Vote() {
               Unlock Voting
             </ButtonPrimary>
           ) : availableVotes && JSBI.notEqual(JSBI.BigInt(0), availableVotes?.raw) ? (
-            <TYPE.body fontWeight={500} mr="6px">
+            <TYPE.body style={{ whiteSpace: 'nowrap' }} fontWeight={500} mr="6px">
               <FormattedCurrencyAmount currencyAmount={availableVotes} /> Votes
             </TYPE.body>
           ) : uniBalance &&
@@ -182,47 +197,33 @@ export default function Vote() {
             <TYPE.body fontWeight={500} mr="6px">
               <FormattedCurrencyAmount currencyAmount={uniBalance} /> Votes
             </TYPE.body>
-          ) : (
-            ''
-          )}
-          {availableVotes ? (
-            <ButtonPrimary
-              as={Link}
-              to="/vote/create-proposal"
-              style={{ width: 'fit-content', borderRadius: '8px' }}
-              padding="6px 8px"
-            >
-              Create Proposal
-            </ButtonPrimary>
-          ) : (
-            ''
+          ) : null}
+          {!showUnlockVoting && (
+            <RowBetween>
+              <div />
+              {userDelegatee && userDelegatee !== ZERO_ADDRESS ? (
+                <RowFixed>
+                  <TYPE.body fontWeight={500} mr="4px">
+                    Delegated to:
+                  </TYPE.body>
+                  <AddressButton>
+                    <StyledExternalLink
+                      href={getEtherscanLink(ChainId.MANTLE_TESTNET, userDelegatee, 'address')}
+                      style={{ margin: '0 4px' }}
+                    >
+                      {userDelegatee === account ? 'Self' : shortenAddress(userDelegatee)}
+                    </StyledExternalLink>
+                    <TextButton onClick={toggleDelegateModal} style={{ marginLeft: '4px' }}>
+                      (edit)
+                    </TextButton>
+                  </AddressButton>
+                </RowFixed>
+              ) : (
+                ''
+              )}
+            </RowBetween>
           )}
         </WrapSmall>
-        {!showUnlockVoting && (
-          <RowBetween>
-            <div />
-            {userDelegatee && userDelegatee !== ZERO_ADDRESS ? (
-              <RowFixed>
-                <TYPE.body fontWeight={500} mr="4px">
-                  Delegated to:
-                </TYPE.body>
-                <AddressButton>
-                  <StyledExternalLink
-                    href={getEtherscanLink(ChainId.MANTLE_TESTNET, userDelegatee, 'address')}
-                    style={{ margin: '0 4px' }}
-                  >
-                    {userDelegatee === account ? 'Self' : shortenAddress(userDelegatee)}
-                  </StyledExternalLink>
-                  <TextButton onClick={toggleDelegateModal} style={{ marginLeft: '4px' }}>
-                    (edit)
-                  </TextButton>
-                </AddressButton>
-              </RowFixed>
-            ) : (
-              ''
-            )}
-          </RowBetween>
-        )}
         {allProposals?.length === 0 && (
           <EmptyProposals>
             <TYPE.body style={{ marginBottom: '8px' }}>No proposals found.</TYPE.body>

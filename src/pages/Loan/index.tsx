@@ -624,13 +624,13 @@ export default function Loan({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                      <TYPE.link fontWeight={600} color={'#fff'}>
                         You are the first liquidity provider.
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={'#fff'}>
                         The ratio of tokens you add will set the price of this pool.
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={'#fff'}>
                         Once you are happy with the rate click supply to review.
                       </TYPE.link>
                     </AutoColumn>
@@ -640,7 +640,7 @@ export default function Loan({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={'#fff'}>
                         <b>Tips:</b>{' '}
                         {loanMode
                           ? `When you Stake your BIT Tokens, you will receive pool tokens representing your position. When
@@ -655,7 +655,7 @@ export default function Loan({
               <>
                 <BlueCard>
                   <AutoColumn gap="2px">
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
+                    <TYPE.link fontWeight={400} color={'#fff'}>
                       <b>Pool Token: </b> {ggtBalance} MTL{' '}
                     </TYPE.link>
                   </AutoColumn>
@@ -831,14 +831,14 @@ export default function Loan({
                         </Text>
                       </ButtonPrimary>
                     ) : (
-                      <ButtonLight
+                      <ButtonPrimary
                         disabled={parseInt(actorData?.borrowedAmount) > 0}
                         onClick={() => OnBorrowAmount(accountAddress)}
                       >
                         <Text fontSize={20} fontWeight={500}>
                           Borrow
                         </Text>
-                      </ButtonLight>
+                      </ButtonPrimary>
                     )}
                   </>
                 )}
