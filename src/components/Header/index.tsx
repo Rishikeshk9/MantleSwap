@@ -181,6 +181,7 @@ const HideSmall = styled.span`
 const NetworkCard = styled(YellowCard)`
   border-radius: 12px;
   padding: 8px 12px;
+  white-space: nowrap;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;
@@ -571,8 +572,8 @@ export default function Header() {
           {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
             MTL
           </StyledNavLink> */}
-          <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-            Vote
+          <StyledNavLink id={`governance-nav-link`} to={'/vote'}>
+            Governance
           </StyledNavLink>
           <StyledNavLink id={`loan-nav-link`} to={'/loan'}>
             Stake
@@ -638,7 +639,7 @@ export default function Header() {
           <StyledMenuButton onClick={() => toggleDarkMode()}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
           </StyledMenuButton>
-          <Menu />
+          {/* <Menu /> */}
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>

@@ -1,0 +1,21 @@
+{
+  "name": "Mantleswap List",
+  "version": {
+    "major": 0,
+    "minor": 2,
+    "patch": 0
+  },
+  "keywords": ["mantle", "tokens", "trusted"],
+  "logoURI": "https://bafybeifwatody4da3mkaayxav3ncs26pdlmny534zuauydavr6dvm2ybwy.ipfs.w3s.link/Mantle%20logo%20icon_black.png",
+  "timestamp": "2023-02-22T14:15:22+0000",
+  "tokens": [
+    {
+      "name": "Mantleswap",
+      "chainId": 5001,
+      "symbol": "MTL",
+      "decimals": 18,
+      "address": "0xAAf8a38363943309cb0B7999344653C540e1E985",
+      "logoURI": "https://bafybeifwatody4da3mkaayxav3ncs26pdlmny534zuauydavr6dvm2ybwy.ipfs.w3s.link/Mantle%20logo%20icon_black.png"
+    }
+  ]
+}

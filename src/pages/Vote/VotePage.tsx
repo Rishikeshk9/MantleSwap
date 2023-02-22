@@ -7,7 +7,7 @@ import { TYPE, StyledInternalLink, ExternalLink } from '../../theme'
 import { RowFixed, RowBetween } from '../../components/Row'
 import { CardSection, DataCard } from '../../components/earn/styled'
 import { ArrowLeft } from 'react-feather'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonPrimary, ButtonErrorStyle } from '../../components/Button'
 import { ProposalStatus } from './styled'
 import { useProposalData, useUserVotesAsOfBlock, ProposalData, useUserDelegatee } from '../../state/governance/hooks'
 import { DateTime } from 'luxon'
@@ -15,8 +15,14 @@ import ReactMarkdown from 'react-markdown'
 import VoteModal from '../../components/vote/VoteModal'
 import { TokenAmount, JSBI } from '@uniswap/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { AVERAGE_BLOCK_TIME_IN_SECS, COMMON_CONTRACT_NAMES, MTL, ZERO_ADDRESS } from '../../constants'
-import { isAddress, getEtherscanLink } from '../../utils'
+import {
+  AVERAGE_BLOCK_TIME_IN_SECS,
+  COMMON_CONTRACT_NAMES,
+  GOVERNANCE_ADDRESS,
+  MTL,
+  ZERO_ADDRESS
+} from '../../constants'
+import { isAddress, getEtherscanLink, getContract } from '../../utils'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleDelegateModal, useToggleVoteModal, useBlockNumber } from '../../state/application/hooks'
 import DelegateModal from '../../components/vote/DelegateModal'
@@ -24,11 +30,27 @@ import { GreyCard } from '../../components/Card'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { BigNumber } from 'ethers'
+import { abi as GOVERNANCE_ABI } from '@uniswap/governance/build/GovernorAlpha.json'
 
 import { Web3Provider } from '@ethersproject/providers'
+import { Check } from '@material-ui/icons'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
+`
+
+const ProposalContainer = styled(AutoColumn)`
+  position: relative;
+  max-width: 640px;
+  width: 100%;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* padding: 1rem; */
 `
 
 const ProposalInfo = styled(AutoColumn)`
@@ -119,6 +141,9 @@ export default function VotePage({
   const [support, setSupport] = useState<boolean>(true)
   const [web3Provider, setWeb3Provider] = useState<any>(null)
   const [accountAddress, setAccountAddress] = useState<string>('')
+
+  //VoteState
+  const [alreadyVoted, setAlreadyVoted] = useState<boolean>(true)
   // modal for casting votes
   const showVoteModal = useModalOpen(ApplicationModal.VOTE)
   const toggleVoteModal = useToggleVoteModal()
@@ -192,6 +217,25 @@ export default function VotePage({
     setWeb3Provider(web3Provider)
   }, [])
 
+  async function callVoterReceipt(proposalId: any): Promise<any> {
+    try {
+      if (!web3Provider && !accountAddress) return
+      const governanceContract = getContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, web3Provider, accountAddress)
+      // call borrowAmount function to borrow the amount
+      const receipt = await governanceContract.getReceipt(proposalId, accountAddress)
+
+      console.log('voter data successful!', receipt)
+      setAlreadyVoted(receipt?.hasVoted)
+    } catch (error) {
+      console.log('Error in Borrowing: ', error)
+      return false
+    }
+  }
+
+  useEffect(() => {
+    if (web3Provider && accountAddress) callVoterReceipt(id)
+  }, [web3Provider, accountAddress, id])
+
   return (
     <PageWrapper gap="lg" justify="center">
       <VoteModal
@@ -202,7 +246,7 @@ export default function VotePage({
         provider={web3Provider}
       />
       <DelegateModal isOpen={showDelegateModal} onDismiss={toggleDelegateModal} title="Unlock Votes" />
-      <ProposalInfo gap="lg" justify="start">
+      <ProposalContainer gap="lg" justify="start">
         <RowBetween style={{ width: '100%' }}>
           <ArrowWrapper to="/vote">
             <ArrowLeft size={20} /> All Proposals
@@ -234,11 +278,21 @@ export default function VotePage({
             </GreyCard>
           )}
         </AutoColumn>
-        {showVotingButtons ? (
+
+        {alreadyVoted && showVotingButtons ? (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {' '}
+            <Check></Check>&nbsp;You have already Voted
+          </div>
+        ) : (
+          ''
+        )}
+        {showVotingButtons && !alreadyVoted ? (
           <RowFixed style={{ width: '100%', gap: '12px' }}>
             <ButtonPrimary
               padding="8px"
               borderRadius="8px"
+              disabled={alreadyVoted}
               onClick={() => {
                 setSupport(true)
                 toggleVoteModal()
@@ -246,16 +300,17 @@ export default function VotePage({
             >
               Vote For
             </ButtonPrimary>
-            <ButtonPrimary
+            <ButtonErrorStyle
               padding="8px"
               borderRadius="8px"
+              disabled={alreadyVoted}
               onClick={() => {
                 setSupport(false)
                 toggleVoteModal()
               }}
             >
               Vote Against
-            </ButtonPrimary>
+            </ButtonErrorStyle>
           </RowFixed>
         ) : (
           ''
@@ -326,7 +381,7 @@ export default function VotePage({
             <ReactMarkdown source={proposalData?.proposer} />
           </ProposerAddressLink>
         </AutoColumn>
-      </ProposalInfo>
+      </ProposalContainer>
     </PageWrapper>
   )
 }

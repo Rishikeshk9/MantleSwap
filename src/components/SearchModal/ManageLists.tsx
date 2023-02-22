@@ -249,9 +249,11 @@ export function ManageLists({
 
   const sortedLists = useMemo(() => {
     const listUrls = Object.keys(lists)
+
     return listUrls
       .filter(listUrl => {
         // only show loaded lists, hide unsupported lists
+
         return Boolean(lists[listUrl].current) && !Boolean(UNSUPPORTED_LIST_URLS.includes(listUrl))
       })
       .sort((u1, u2) => {
@@ -370,6 +372,7 @@ export function ManageLists({
           {sortedLists.map(listUrl => (
             <ListRow key={listUrl} listUrl={listUrl} />
           ))}
+          {console.log('LIST URLS', sortedLists)}
         </AutoColumn>
       </ListContainer>
     </Wrapper>
